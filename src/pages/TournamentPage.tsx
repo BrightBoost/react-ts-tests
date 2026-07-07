@@ -26,15 +26,17 @@ export default function TournamentPage({ onNavigateToSignUp, newParticipant }: T
         return () => clearTimeout(timer);
     }, []);
 
-    // Reacts when a new participant is added from the sign-up page
+    // Reacts when a new participant is added from the sign-up page.
+    // Waits for isLoading to be false so the initial load does not
+    // overwrite the new entry when the page remounts.
     useEffect(() => {
-        if (newParticipant) {
+        if (newParticipant && !isLoading) {
             setParticipants((prev) => [
                 ...prev,
                 { ...newParticipant, id: prev.length + 1 },
             ]);
         }
-    }, [newParticipant]);
+    }, [newParticipant, isLoading]);
 
     function handleRemove(id: number) {
         setParticipants((prev) => prev.filter((p) => p.id !== id));

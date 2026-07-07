@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
+    "allowArbitraryExtensions": true,
     "types": ["jest", "@testing-library/jest-dom"],
     "noUnusedLocals": false,
     "noUnusedParameters": false
