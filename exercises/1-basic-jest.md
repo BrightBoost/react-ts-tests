@@ -58,6 +58,7 @@ Write four tests (one assertion each):
 Write a function `validateCategory(value: string)` that throws an `Error('Invalid category')` if the value is not one of `'Beginner'`, `'Intermediate'`, or `'Advanced'`.
 
 Write two tests:
+
 - Calling it with `'Expert'` throws
 - Calling it with `'Beginner'` does **not** throw
 
@@ -119,11 +120,12 @@ Write a function `isEligible(age: number): boolean` that returns `true` for ages
 Use `test.each` to test at least five age values — a mix of eligible and ineligible — without copy-pasting the same assertion five times.
 
 > **API:**
+>
 > ```ts
 > test.each<[number, boolean]>([
 >   [15, false],
 >   // add more rows...
-> ])('age %i should return %s', (age, expected) => {
+> ])("age %i should return %s", (age, expected) => {
 >   expect(isEligible(age)).toBe(expected);
 > });
 > ```

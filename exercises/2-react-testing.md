@@ -55,6 +55,7 @@ Create a participant object and render the card. Assert that the **name**, **ema
 Import `ParticipantList` and render it with an array of **three** participants.
 
 Assert:
+
 - The empty-state message is **not** shown
 - There are exactly **3** elements with `data-testid="participant-card"`
 
@@ -69,10 +70,10 @@ Import `ParticipantCard`.
 Create a mock `onRemove` callback. Render the card and use `userEvent` to click the Remove button. Assert that `onRemove` was called with the participant's id.
 
 > ```tsx
-> import userEvent from '@testing-library/user-event';
+> import userEvent from "@testing-library/user-event";
 >
 > const user = userEvent.setup();
-> await user.click(screen.getByRole('button', { name: /remove/i }));
+> await user.click(screen.getByRole("button", { name: /remove/i }));
 > ```
 
 ---
@@ -136,10 +137,10 @@ Write two tests:
 2. After calling `act(() => jest.runAllTimers())` and awaiting `waitFor`, the loading message is **gone** and all three initial participants are in the document.
 
 > ```tsx
-> import { render, screen, waitFor, act } from '@testing-library/react';
+> import { render, screen, waitFor, act } from "@testing-library/react";
 >
 > act(() => jest.runAllTimers());
 > await waitFor(() =>
->   expect(screen.queryByTestId('loading-message')).not.toBeInTheDocument()
+>   expect(screen.queryByTestId("loading-message")).not.toBeInTheDocument(),
 > );
 > ```
