@@ -11,11 +11,14 @@ const INITIAL_PARTICIPANTS: Participant[] = [
 interface TournamentPageProps {
     onNavigateToSignUp: () => void;
     newParticipant: Omit<Participant, 'id'> | null;
+    maxParticipants?: number;
 }
 
-export default function TournamentPage({ onNavigateToSignUp, newParticipant }: TournamentPageProps) {
+export default function TournamentPage({ onNavigateToSignUp, newParticipant, maxParticipants }: TournamentPageProps) {
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [filterCategory, setFilterCategory] = useState('All');
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Simulates fetching the initial participant list from an API
     useEffect(() => {
@@ -42,6 +45,12 @@ export default function TournamentPage({ onNavigateToSignUp, newParticipant }: T
         setParticipants((prev) => prev.filter((p) => p.id !== id));
     }
 
+    const displayedParticipants = participants
+        .filter((p) => filterCategory === 'All' || p.category === filterCategory)
+        .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const isFull = maxParticipants !== undefined && participants.length >= maxParticipants;
+
     return (
         <div data-testid="tournament-page">
             <h2>Tournament Sign-Ups</h2>
@@ -50,10 +59,30 @@ export default function TournamentPage({ onNavigateToSignUp, newParticipant }: T
             ) : (
                 <>
                     <p data-testid="participant-count">{participants.length} participant(s) signed up</p>
-                    <ParticipantList participants={participants} onRemove={handleRemove} />
+                    <input
+                        data-testid="search-input"
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by name"
+                    />
+                    <select
+                        data-testid="category-filter"
+                        value={filterCategory}
+                        onChange={(e) => setFilterCategory(e.target.value)}
+                    >
+                        <option value="All">All</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    <button onClick={() => setParticipants([])}>Clear All</button>
+                    <ParticipantList participants={displayedParticipants} onRemove={handleRemove} />
                 </>
             )}
-            <button onClick={onNavigateToSignUp}>Go to Sign Up</button>
+            <button onClick={onNavigateToSignUp} disabled={isFull}>
+                {isFull ? 'Tournament Full' : 'Go to Sign Up'}
+            </button>
         </div>
     );
 }
